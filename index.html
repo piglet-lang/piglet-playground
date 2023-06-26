@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script type="importmap">
+     {"imports": {"astring": "https://cdn.jsdelivr.net/npm/astring@latest/dist/astring.mjs"}}
+    </script>
+    <script type="module" src="http://127.0.0.1:9999/lib/piglet/browser/main.mjs"></script>
+    <script type="piglet" src="./src/main.pig"></script>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="playground" id="app">
+        <div class="playground__editor">
+            <textarea id="code"></textarea>
+            <div id="action-line">
+                <button id="run">Run</button>
+            </div>
+        </div>
+        <div class="playground__preview">
+            <iframe src="./preview.html" id="preview-frame"></iframe>
+            <div id="console">piglet=></div>
+        </div>
+    </div>
+  </body>
+</html>
