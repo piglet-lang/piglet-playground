@@ -1,6 +1,6 @@
 (module backend
   (:import
-    config markup
+    config markup tree-widget
     contrib:html
     contrib:http/oauth
     contrib:http/router
@@ -19,35 +19,37 @@
   (str "hsl(217 5% " pct "%)"))
 
 (def styles
-  [[":where(*)"
-    {:box-sizing "border-box"
-     :--theme-font-family "'Libre Franklin', sans-serif"
-     :--theme-color-gray-1 (gray 2)
-     :--theme-color-gray-2 (gray 14)
-     :--theme-color-gray-3 (gray 25)
-     :--theme-color-gray-4 (gray 37)
-     :--theme-color-gray-5 (gray 48)
-     :--theme-color-gray-6 (gray 60)
-     :--theme-color-gray-7 (gray 71)
-     :--theme-color-gray-8 (gray 94)
-     :--theme-color-gray-9 (gray 98)}]
-   [:at-media {:prefers-color-scheme "dark"}
-    [":where(*)"
-     {:--theme-color-gray-1 (gray 98)
-      :--theme-color-gray-2 (gray 83)
-      :--theme-color-gray-3 (gray 71)
-      :--theme-color-gray-4 (gray 60)
-      :--theme-color-gray-5 (gray 48)
-      :--theme-color-gray-6 (gray 37)
-      :--theme-color-gray-7 (gray 25)
-      :--theme-color-gray-8 (gray 14)
-      :--theme-color-gray-9 (gray 2)}]]
-   [#{:html :body} {:display "flex" :flex-direction "column" :height "100%"}]
-   [:html
-    {:font-family "var(--theme-font-family)"
-     :color "var(--theme-color-gray-1)"
-     :background-color "var(--theme-color-gray-9)"}]
-   [#{:html :body} {:margin 0 :padding 0}]])
+  (into
+    [[":where(*)"
+      {:box-sizing "border-box"
+       :--theme-font-family "'Libre Franklin', sans-serif"
+       :--theme-color-gray-1 (gray 2)
+       :--theme-color-gray-2 (gray 14)
+       :--theme-color-gray-3 (gray 25)
+       :--theme-color-gray-4 (gray 37)
+       :--theme-color-gray-5 (gray 48)
+       :--theme-color-gray-6 (gray 60)
+       :--theme-color-gray-7 (gray 71)
+       :--theme-color-gray-8 (gray 94)
+       :--theme-color-gray-9 (gray 98)}]
+     [:at-media {:prefers-color-scheme "dark"}
+      [":where(*)"
+       {:--theme-color-gray-1 (gray 98)
+        :--theme-color-gray-2 (gray 83)
+        :--theme-color-gray-3 (gray 71)
+        :--theme-color-gray-4 (gray 60)
+        :--theme-color-gray-5 (gray 48)
+        :--theme-color-gray-6 (gray 37)
+        :--theme-color-gray-7 (gray 25)
+        :--theme-color-gray-8 (gray 14)
+        :--theme-color-gray-9 (gray 2)}]]
+     [#{:html :body} {:display "flex" :flex-direction "column" :height "100%"}]
+     [:html
+      {:font-family "var(--theme-font-family)"
+       :color "var(--theme-color-gray-1)"
+       :background-color "var(--theme-color-gray-9)"}]
+     [#{:html :body} {:margin 0 :padding 0}]]
+    tree-widget:styles))
 
 (defn base-layout [h]
   [:<> h])
@@ -58,15 +60,15 @@
                [:meta {:charset "utf-8"}]
                [:meta {:content "width=device-width, initial-scale=1" :name "viewport"}]
                [:script {:type "importmap"} "{\"imports\":{\"astring\":\"/npm/astring\",\"mime-db\":\"/npm/mime-db\",\"redis\":\"/npm/redis\"}}"]
-               [:script {:type "application/javascript" :src "https://unpkg.com/source-map@0.7.3/dist/source-map.js"}]
+               [:script {:type "application/javascript" :src "/npm/source-map/dist/source-map.js"}]
                [:script {:type "module" :src "/piglet/lib/piglet/browser/main.mjs?verbosity=0"}]
                [:script {:type "piglet"}
-           (str
-             '(await (load-package "/self"))
-             '(await (require 'https://piglet-lang.org/packages/piglet-playground:frontend))
-             '(await (require 'https://piglet-lang.org/packages/piglet:pdp-client))
-             '(piglet:pdp-client:connect! "ws://127.0.0.1:17017")
-             )]]
+                (str
+                  '(await (load-package "/self"))
+                  '(await (require 'https://piglet-lang.org/packages/piglet-playground:frontend))
+                  '(await (require 'https://piglet-lang.org/packages/piglet:pdp-client))
+                  '(piglet:pdp-client:connect! "ws://127.0.0.1:17017")
+                  )]]
    :html
    [markup:playground]})
 

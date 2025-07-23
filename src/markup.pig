@@ -30,6 +30,12 @@
      [:div#output]
      ]))
 
+(sc:defc module-browser
+  ([]
+    [:div#module-browser
+     [:h2 "Modules"]
+     ]))
+
 (sc:defc main-section
   {:display "flex"
    :flex-direction "row"
@@ -37,9 +43,11 @@
   [:>* {:flex-grow 1
         :padding "1rem"
         :background-color "var(--theme-color-gray-8)"}]
-  [:.code-pane {:border-right "1px solid var(--theme-color-gray-7)"}]
+  [">*:not(:last-child)"
+   {:border-right "1px solid var(--theme-color-gray-7)"}]
   ([]
     [:main
+     [module-browser]
      [code-pane]
      [output-pane]
      ]))
@@ -51,6 +59,4 @@
   ([]
     [:div
      [header]
-     [main-section]
-     ]
-    ))
+     [main-section]]))
