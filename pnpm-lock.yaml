@@ -11,6 +11,9 @@ importers:
       astring:
         specifier: ^1.9.0
         version: 1.9.0
+      piglet-contrib:
+        specifier: ^0.0.3
+        version: 0.0.3
       redis:
         specifier: ^5.6.0
         version: 5.6.0
@@ -59,6 +62,9 @@ packages:
     resolution: {integrity: sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==}
     engines: {node: '>=0.10.0'}
 
+  piglet-contrib@0.0.3:
+    resolution: {integrity: sha512-/eM2STU69s53QGWxNFCXIkQFDXa35EHe2cudgFZis40pzIr1qva1OL+gMevBiJWE8yWGTCIrQAIYeTlKKFI2+A==}
+
   redis@5.6.0:
     resolution: {integrity: sha512-0x3pM3SlYA5azdNwO8qgfMBzoOqSqr9M+sd1hojbcn0ZDM5zsmKeMM+zpTp6LIY+mbQomIc/RTTQKuBzr8QKzQ==}
     engines: {node: '>= 18'}
@@ -96,6 +102,8 @@ snapshots:
   astring@1.9.0: {}
 
   cluster-key-slot@1.1.2: {}
+
+  piglet-contrib@0.0.3: {}
 
   redis@5.6.0:
     dependencies:
