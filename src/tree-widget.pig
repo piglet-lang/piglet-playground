@@ -11,7 +11,7 @@
 (declare subtree)
 
 (sc:defc tree-item
-  ([{:keys [children node on-click] :as cfg} path data]
+  ([{:keys [children node on-click on-expand on-collapse] :as cfg} path data]
     (let [{:keys [leaf expanded label]} (node data path)
           on-click-handler (fn [_] (on-click data path))]
       (if leaf

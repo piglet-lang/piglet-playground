@@ -73,10 +73,37 @@
      :expanded false})
   (-on-click [this path]))
 
-(dom:append
-  (dom:el-by-id "module-browser")
-  (dom:dom [tree-widget:tree
-            {:children -children
-             :node -node
-             :on-click -on-click}
-            module-registry]))
+(defonce tree-component (box nil))
+
+(defn render-module-tree! []
+  (swap! tree-component
+    (fn [c]
+      (let [t (dom:dom [tree-widget:tree
+                        {:children -children
+                         :node -node
+                         :on-click -on-click}
+                        module-registry])]
+        (if c
+          (dom:replace c t)
+          (do
+            (dom:append (dom:el-by-id "module-browser") t)
+            t))))))
+
+(def module-listener
+  #js {:on_new_package (fn [p]
+                         (conj! (.-listeners p) module-listener)
+                         (render-module-tree!))
+       :on_new_module (fn [p m]
+                        (conj! (.-listeners m) module-listener)
+                        (render-module-tree!))
+       :on_new_var (fn [p m v]
+                     (render-module-tree!))})
+
+(conj! (.-listeners module-registry) module-listener)
+
+(doseq [p (js:Object.values (.-packages module-registry))]
+  (conj! (.-listeners p) module-listener)
+  (doseq [v (js:Object.values (.-modules p))]
+    (conj! (.-listeners p) module-listener)))
+
+(render-module-tree!)
