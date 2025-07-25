@@ -23,6 +23,7 @@
     [[":where(*)"
       {:box-sizing "border-box"
        :--theme-font-family "'Libre Franklin', sans-serif"
+       :--theme-font-family-mono "'Iosevka Web', monospace"
        :--theme-color-gray-1 (gray 2)
        :--theme-color-gray-2 (gray 14)
        :--theme-color-gray-3 (gray 25)
@@ -44,6 +45,7 @@
         :--theme-color-gray-8 (gray 14)
         :--theme-color-gray-9 (gray 2)}]]
      [#{:html :body} {:display "flex" :flex-direction "column" :height "100%"}]
+     [#{:textarea :pre :code} {:font-family "var(--theme-font-family-mono)"}]
      [:html
       {:font-family "var(--theme-font-family)"
        :color "var(--theme-color-gray-1)"
@@ -59,14 +61,16 @@
    :html-head [:<>
                [:meta {:charset "utf-8"}]
                [:meta {:content "width=device-width, initial-scale=1" :name "viewport"}]
+               [:link {:rel "stylesheet" :href "/fonts/libre_franklin.css"}]
+               [:link {:rel "stylesheet" :href "/fonts/iosevka.css"}]
                [:script {:type "importmap"} "{\"imports\":{\"astring\":\"/npm/astring\",\"mime-db\":\"/npm/mime-db\",\"redis\":\"/npm/redis\"}}"]
                [:script {:type "application/javascript" :src "/npm/source-map/dist/source-map.js"}]
                [:script {:type "module" :src "/piglet/lib/piglet/browser/main.mjs?verbosity=0"}]
                [:script {:type "piglet"}
                 (str
                   '(await (load-package "/self"))
-                  '(await (require 'https://piglet-lang.org/packages/piglet-playground:frontend))
-                  '(await (require 'https://piglet-lang.org/packages/piglet:pdp-client))
+                  '(await (import 'https://piglet-lang.org/packages/piglet-playground:frontend))
+                  '(await (import 'https://piglet-lang.org/packages/piglet:pdp-client))
                   '(piglet:pdp-client:connect! "ws://127.0.0.1:17017")
                   )]]
    :html
@@ -133,7 +137,6 @@
 
 (defn ^:async cmd-start! [{:keys [port] :as opts}]
   (println "Starting on port" port )
-
   (await (dev-server:register-package (str dev-server:piglet-lang-path "/packages/piglet") "piglet-lang"))
   (await (dev-server:register-package "." "self"))
   (start-server! opts))

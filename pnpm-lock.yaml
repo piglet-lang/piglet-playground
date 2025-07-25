@@ -11,6 +11,9 @@ importers:
       astring:
         specifier: ^1.9.0
         version: 1.9.0
+      mime-db:
+        specifier: ^1.54.0
+        version: 1.54.0
       piglet-contrib:
         specifier: ^0.0.4
         version: 0.0.4

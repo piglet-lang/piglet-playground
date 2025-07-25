@@ -12,7 +12,8 @@
 (sc:defc code-pane
   {:display "flex"
    :flex-direction "column"
-   :min-height "100%"}
+   :min-height "100%"
+   :max-width "40vw"}
   [:>textarea
    {:flex-grow 1
     :background-color "inherit"
@@ -24,6 +25,7 @@
      ]))
 
 (sc:defc output-pane
+  {:max-width "40vw"}
   ([]
     [:div
      [:h2 "Output"]
@@ -31,6 +33,7 @@
      ]))
 
 (sc:defc module-browser
+  {:max-width "25vw"}
   ([]
     [:div#module-browser
      [:h2 "Modules"]

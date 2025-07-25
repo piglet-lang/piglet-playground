@@ -4,22 +4,29 @@
     [sc :from contrib:styled-component]))
 
 (def styles
-  [["[role=\"treeitem\"][aria-expanded=\"false\"] > [role=\"group\"]"
-    {:display "none"}]])
+  [[".tree-item[aria-expanded=true]>.expand" {:display "none"}]
+   [".tree-item[aria-expanded=false]>.collapse" {:display "none"}]
+   ])
 
 (declare subtree)
 
 (sc:defc tree-item
-  ([{:keys [children node] :as cfg} path data]
-    (let [{:keys [leaf expanded label]} (node data path)]
+  ([{:keys [children node on-click] :as cfg} path data]
+    (let [{:keys [leaf expanded label]} (node data path)
+          on-click-handler (fn [_] (on-click data path))]
       (if leaf
-        [:li {:role "treeitem"} label]
+        [:li {:role "treeitem"
+              :on-click on-click-handler} label]
         [:li {:role "treeitem" :aria-expanded expanded}
-         [:span {:on-click (fn [{:props [target]}]
-                             (def target target)
-                             (dom:set-attr (dom:parent target)
-                               :aria-expanded
-                               (not= "true" (dom:attr (dom:parent target) :aria-expanded))))}
+         [:button.expand
+          {:on-click (fn [{:props [target]}]
+                       (dom:set-attr (dom:parent target) :aria-expanded true))}
+          "+"]
+         [:button.collapse
+          {:on-click (fn [{:props [target]}]
+                       (dom:set-attr (dom:parent target) :aria-expanded false))}
+          "-"]
+         [:span {:on-click on-click-handler}
           label]
          [subtree cfg (conj path data) data]]))))
 
@@ -30,6 +37,8 @@
        [tree-item cfg (conj path data) ch])]))
 
 (sc:defc tree
+  ["[role=\"treeitem\"][aria-expanded=\"false\"] > [role=\"group\"]"
+   {:display "none"}]
   ([{:keys [children node] :as cfg} data]
     [:ul {:role "tree"}
      (for [ch (children data)]

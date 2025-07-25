@@ -1,6 +1,7 @@
 {
 	"dependencies": {
 		"astring": "^1.9.0",
+		"mime-db": "^1.54.0",
 		"piglet-contrib": "^0.0.4",
 		"redis": "^5.6.1",
 		"source-map": "^0.7.6",
