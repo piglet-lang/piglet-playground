@@ -1,9 +1,9 @@
 {
 	"dependencies": {
 		"astring": "^1.9.0",
-		"piglet-contrib": "^0.0.3",
-		"redis": "^5.6.0",
-		"source-map": "^0.7.4",
+		"piglet-contrib": "^0.0.4",
+		"redis": "^5.6.1",
+		"source-map": "^0.7.6",
 		"source-map-generator": "^2.0.1"
 	}
 }
