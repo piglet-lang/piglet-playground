@@ -1,0 +1,35 @@
+#!/usr/bin/env piglet
+
+(module dev
+  (:import
+    [parseargs :from piglet:cli/parseargs]
+    [term :from piglet:cli/terminal]
+    [cp :from "node:child_process"]))
+
+(def init
+  {:db-user "pigplay"
+   :db-password "pigplay"
+   :db-db "pigplay"
+   :db-host "localhost"})
+
+(defn psql
+  "Connect to postgres"
+  [{:keys [db-user db-password db-host db-db]}]
+  (cp:spawnSync "psql" ["-h" db-host "-U" db-user db-db]
+    #js {:stdio "inherit" :stdin "inherit" :env #js {"PGPASSWORD" db-password}}))
+
+(def commands ["psql" #'psql])
+
+(def flags [])
+
+(parseargs:dispatch
+  {:name "bin/dev"
+   :doc "Piglet Playground dev tool"
+   :init init
+   :commands commands
+   :flags flags}
+  (drop 3 js:process.argv))
+
+;; Local Variables:
+;; mode: piglet
+;; End:

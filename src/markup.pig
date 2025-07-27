@@ -20,7 +20,7 @@
     :border "none"}]
   ([]
     [:div
-     [:h2 "Code"]
+     [:h2 "Module: user"]
      [:textarea]
      ]))
 
@@ -36,7 +36,7 @@
   {:max-width "25vw"}
   ([]
     [:div#module-browser
-     [:h2 "Modules"]
+     [:h2 "Packages"]
      ]))
 
 (sc:defc main-section
@@ -62,4 +62,5 @@
   ([]
     [:div
      [header]
-     [main-section]]))
+     [main-section]
+     [:div#ui]]))

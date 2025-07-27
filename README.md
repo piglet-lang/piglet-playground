@@ -2,6 +2,17 @@
 
 Interactive web Piglet environment
 
+## Databases
+
+Redis and PostgreSQL:
+
+```
+docker compose up
+bin/dev psql < schema.sql
+```
+
+## REPL / runtime
+
 To work on the frontend:
 
 ```

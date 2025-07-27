@@ -3,12 +3,19 @@
   (:import
     [fs :from "node:fs"]))
 
-(def local-config (box nil))
+(def config (box nil))
 
 (defn read-pig-file [f]
-  (read-string (.toString (fs:readFileSync "config.local.pig"))))
+  (when (fs:existsSync f)
+    (read-string (.toString (fs:readFileSync f)))))
 
-(defn value [k]
-  (when-not @local-config
-    (reset! local-config (read-pig-file)))
-  (get @local-config k))
+(defn value
+  ([k]
+    (when-not @config
+      (reset! config (merge
+                       (read-pig-file "config.pig")
+                       (read-pig-file "config.local.pig"))))
+    (get @config k))
+  ([k fallback]
+    (let [v (value k)]
+      (if (some? v) v fallback))))

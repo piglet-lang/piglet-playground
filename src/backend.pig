@@ -5,6 +5,7 @@
     contrib:http/oauth
     contrib:http/router
     contrib:http/session
+    [uuid :from "uuid"]
     [dev-server :from piglet:node/dev-server]
     [assets :from contrib:node/http/assets]
     [cli :from piglet:cli/parseargs]
@@ -57,6 +58,10 @@
   [:<> h])
 
 (defn GET-index [req]
+  {:status 302
+   :headers {"Location" (str "/w/" (uuid:v7))}})
+
+(defn GET-workspace [req]
   {:status 200
    :html-head [:<>
                [:meta {:charset "utf-8"}]
@@ -69,9 +74,9 @@
                [:script {:type "piglet"}
                 (str
                   '(await (load-package "/self"))
-                  '(await (import 'https://piglet-lang.org/packages/piglet-playground:frontend))
                   '(await (import 'https://piglet-lang.org/packages/piglet:pdp-client))
                   '(piglet:pdp-client:connect! "ws://127.0.0.1:17017")
+                  '(await (import 'https://piglet-lang.org/packages/piglet-playground:frontend))
                   )]]
    :html
    [markup:playground]})
@@ -101,6 +106,7 @@
                     [:link {:rel "stylesheet" :href "/styles.css"}]]
         :layout base-layout}
     ["/" {:get #'GET-index}]
+    ["/w/:uuid" {:get #'GET-workspace}]
     ["/inspect" {:get #'GET-inspect}]
     ["/styles.css" {:get #'GET-styles}]]])
 
@@ -152,10 +158,3 @@
 (comment
   (cmd-start! {:port 4501})
   )
-
-;; (dev-server:package-pig-response )
-;; (-> (dev-server:handler {:path "/piglet-contrib9/package.pig"
-;;                          :method :get})
-;;   await
-;;   :body
-;;   .toString)
